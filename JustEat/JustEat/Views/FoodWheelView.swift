@@ -71,7 +71,7 @@ struct FoodSlotMachineView: View {
                 }
 
                 Button(action: spin) {
-                    Text("SPIN")
+                    Text("Find my cuisine...")
                         .font(.title2)
                         .fontWeight(.bold)
                         .padding(.horizontal, 40)
