@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct FoodSlotMachineView: View {
-    let foods = ["🍕", "🍔", "🍣", "🌮", "🍝", "🍛", "🍜", "🥙"]
+    let foodsEmojis = Array(FoodOptions.all.keys)
+    let cuisineNames = Array(FoodOptions.all.values)
+
 
     @State private var reelIndex = 0
     @State private var isSpinning = false
@@ -51,7 +53,7 @@ struct FoodSlotMachineView: View {
                         Spacer()
                             .frame(height: 125)
 
-                        Text(foods[reelIndex])
+                        Text(foodsEmojis[reelIndex])
                             .font(.system(size: 60))
                             .shadow(color: .white.opacity(0.8), radius: 2, x: 0, y: 2)
                             .offset(x: -8, y: 0)
@@ -101,15 +103,17 @@ struct FoodSlotMachineView: View {
         selectedItem = nil
 
         let totalSteps = 30
-        let targetIndex = Int.random(in: 0..<foods.count)
+        let targetIndex = Int.random(in: 0..<foodsEmojis.count)
         gradualSpin(step: 1, totalSteps: totalSteps, targetIndex: targetIndex)
     }
+
 
     func gradualSpin(step: Int, totalSteps: Int, targetIndex: Int) {
         if step > totalSteps {
             reelIndex = targetIndex
             isSpinning = false
-            selectedItem = foods[targetIndex]
+            let emoji = foodsEmojis[targetIndex]
+            selectedItem = FoodOptions.all[emoji]
 
             withAnimation { showConfetti = true }
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
@@ -118,7 +122,7 @@ struct FoodSlotMachineView: View {
             return
         }
 
-        reelIndex = (reelIndex + 1) % foods.count
+        reelIndex = (reelIndex + 1) % foodsEmojis.count
         let progress = Double(step) / Double(totalSteps)
         let interval = 0.05 + (0.3 - 0.05) * progress
 
