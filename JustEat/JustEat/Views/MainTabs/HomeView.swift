@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @AppStorage("userPostcode") private var postcode: String = ""
-    @StateObject private var viewModel = RestaurantViewModel()
+    @ObservedObject var viewModel: RestaurantViewModel
     @State private var hasLoaded = false
 
     var body: some View {
@@ -103,11 +103,11 @@ struct HomeView: View {
             }
             .navigationBarHidden(true)
         }
+        .onChange(of: postcode) { newValue in
+            viewModel.fetchRestaurants(postcode: newValue)
+        }
     }
 }
 
 
 
-#Preview {
-  HomeView()
-}

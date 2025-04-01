@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct JustEatApp: App {
+    @StateObject private var viewModel = RestaurantViewModel()
+  
     var body: some Scene {
         WindowGroup {
-          HomeView()
+          HomeView(viewModel: viewModel)
         }
     }
 }

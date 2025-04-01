@@ -9,9 +9,11 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var viewModel = RestaurantViewModel()
+  
     var body: some View {
         TabView {
-            HomeView()
+            HomeView(viewModel: viewModel)
                 .tabItem {
                     Label("Home", systemImage: "house")
                 }
@@ -21,7 +23,7 @@ struct ContentView: View {
                     Label("Machine", systemImage: "gamecontroller")
                 }
 
-            SettingsView()
+            SettingsView(viewModel: viewModel)
                 .tabItem {
                     Label("Settings", systemImage: "gearshape")
                 }

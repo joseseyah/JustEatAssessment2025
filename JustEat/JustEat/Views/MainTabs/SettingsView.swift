@@ -12,6 +12,7 @@ struct SettingsView: View {
     @AppStorage("userPostcode") private var userPostcode: String = ""
     @State private var tempPostcode: String = ""
     @State private var showingSaved = false
+    var viewModel: RestaurantViewModel
 
     var body: some View {
         ZStack {
@@ -69,6 +70,7 @@ struct SettingsView: View {
                     Button(action: {
                         if !tempPostcode.trimmingCharacters(in: .whitespaces).isEmpty {
                             userPostcode = tempPostcode
+                            viewModel.fetchRestaurants(postcode: tempPostcode)
                             tempPostcode = ""
                             withAnimation { showingSaved = true }
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
