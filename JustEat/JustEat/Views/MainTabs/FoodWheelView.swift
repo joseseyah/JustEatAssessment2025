@@ -16,6 +16,7 @@ struct FoodSlotMachineView: View {
     @State private var isSpinning = false
     @State private var selectedItem: String? = nil
     @State private var showConfetti = false
+    @State private var ResultsSheet = false
 
     var body: some View {
         ZStack {
@@ -70,6 +71,9 @@ struct FoodSlotMachineView: View {
                         .fontWeight(.semibold)
                         .foregroundColor(.white)
                         .shadow(color: .black.opacity(0.3), radius: 2, x: 1, y: 2)
+                        .sheet(isPresented: $ResultsSheet){
+                          ResultsView(selectedCategory: selectedItem ?? "Unkown")
+                        }
                 }
 
                 Button(action: spin) {
@@ -118,6 +122,7 @@ struct FoodSlotMachineView: View {
             withAnimation { showConfetti = true }
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 withAnimation { showConfetti = false }
+                ResultsSheet = true
             }
             return
         }
