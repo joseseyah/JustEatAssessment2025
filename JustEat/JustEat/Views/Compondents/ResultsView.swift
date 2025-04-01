@@ -15,6 +15,7 @@ struct ResultsView: View {
     @State private var hasLoaded = false
 
     var body: some View {
+      NavigationView{
         ZStack {
             LinearGradient(
                 gradient: Gradient(colors: [
@@ -47,8 +48,11 @@ struct ResultsView: View {
                     ScrollView {
                         LazyVStack(spacing: 16) {
                             ForEach(viewModel.restaurants) { restaurant in
-                                RestaurantCardView(restaurant: restaurant)
-                                    .padding(.horizontal)
+                                NavigationLink(destination: RestaurantView(restaurant: restaurant)) {
+                                    RestaurantCardView(restaurant: restaurant)
+                                        .padding(.horizontal)
+                                }
+                                .buttonStyle(PlainButtonStyle())
                             }
                         }
                         .padding(.top)
@@ -66,6 +70,8 @@ struct ResultsView: View {
               }
             }
         }
+      }
+
     }
 }
 
