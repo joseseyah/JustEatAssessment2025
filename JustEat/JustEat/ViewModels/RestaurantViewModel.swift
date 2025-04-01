@@ -12,7 +12,7 @@ class RestaurantViewModel: ObservableObject {
     @Published var restaurants: [Restaurant] = []
     @Published var errorMessage: String? = nil
 
-    func fetchRestaurants(postcode: String) {
+    func fetchRestaurants(postcode: String, filterByCuisine cuisineFilter: String? = nil) {
         let trimmed = postcode.trimmingCharacters(in: .whitespacesAndNewlines)
         guard let url = URL(string: "https://uk.api.just-eat.io/discovery/uk/restaurants/enriched/bypostcode/\(trimmed)") else {
             self.errorMessage = "Something is invalid here"
@@ -36,7 +36,18 @@ class RestaurantViewModel: ObservableObject {
 
                 do {
                     let decoded = try JSONDecoder().decode(RestaurantResponse.self, from: data)
-                    self.restaurants = Array(decoded.restaurants.prefix(10))
+                    var filteredRestaurants = decoded.restaurants
+
+                    if let cuisine = cuisineFilter {
+                        filteredRestaurants = filteredRestaurants.filter { restaurant in
+                            restaurant.cuisines?.first?.name.lowercased() == cuisine.lowercased()
+                        }
+                    }
+
+
+
+                    self.restaurants = Array(filteredRestaurants.prefix(10))
+
                 } catch {
                     self.errorMessage = "Failed to decode response: \(error.localizedDescription)"
                 }

@@ -13,11 +13,11 @@ struct FoodOptions {
         "🍕": "Pizza",
         "🍔": "Burgers",
         "🍣": "Sushi",
-        "🌮": "Tacos",
-        "🍝": "Pasta",
-        "🍛": "Curry",
-        "🍜": "Ramen",
-        "🥙": "Wraps"
+        "🌮": "Mexican",
+        "🍝": "Italien",
+        "🍛": "Indian",
+        "🍜": "Chinese",
+        "🥙": "Sandwiches"
     ]
 }
 
