@@ -15,7 +15,6 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                // 🍊 Gradient Background
                 LinearGradient(
                     gradient: Gradient(colors: [
                         Color(red: 1.0, green: 0.6, blue: 0.2),
@@ -26,16 +25,27 @@ struct HomeView: View {
                 )
                 .ignoresSafeArea()
 
-                VStack(spacing: 20) {
-                    // 🟠 Title Capsule (UI always visible)
+                VStack(spacing: 12) {
                     Text("Restaurants")
                         .font(.system(size: 32, weight: .black, design: .rounded))
                         .foregroundColor(.white)
-                        .padding(.horizontal, 30)
-                        .padding(.vertical, 10)
-                        .padding(.top, 20)
+                        .padding(.top, 24)
 
-                    Spacer(minLength: 10)
+                    if !postcode.isEmpty && !viewModel.restaurants.isEmpty {
+                        HStack(spacing: 6) {
+                            Image(systemName: "mappin.and.ellipse")
+                                .foregroundColor(.white.opacity(0.9))
+
+                            Text(postcode.uppercased())
+                                .fontWeight(.black)
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 5)
+                                .background(Color.white.opacity(0.2))
+                                .foregroundColor(.white)
+                                .clipShape(Capsule())
+                        }
+                        .font(.caption)
+                    }
 
                     if postcode.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                         Spacer()
@@ -49,25 +59,40 @@ struct HomeView: View {
                             ProgressView("Loading restaurants...")
                                 .progressViewStyle(CircularProgressViewStyle(tint: .white))
                                 .foregroundColor(.white)
-                            Spacer()
+                            Spacer(minLength: 10)
                         } else {
-                          ScrollView {
-                              LazyVStack(spacing: 16) {
-                                  ForEach(viewModel.restaurants) { restaurant in
-                                    NavigationLink(destination: RestaurantView(restaurant: restaurant)) {
-                                          RestaurantCardView(restaurant: restaurant)
-                                              .padding(.horizontal)
-                                      }
-                                      .buttonStyle(PlainButtonStyle()) // removes default link highlight
-                                  }
+                            ScrollView {
+                                FoodCategoryScrollView()
+                                    .padding(.top, 4)
+
+                                Text("Popular restaurants near you")
+                                    .font(.system(size: 18, weight: .black, design: .rounded))
+                                    .foregroundColor(.orange)
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 8)
+                                    .background(Color.white)
+                                    .clipShape(Capsule())
+                                    .padding(.top, 6)
+
+
+                                LazyVStack(spacing: 16) {
+                                    ForEach(viewModel.restaurants) { restaurant in
+                                        NavigationLink(destination: RestaurantView(restaurant: restaurant)) {
+                                            RestaurantCardView(restaurant: restaurant)
+                                                .padding(.horizontal)
+                                        }
+                                        .buttonStyle(PlainButtonStyle())
+                                    }
+                                }
+                                .padding(.top)
                             }
-                            .padding(.top)
-                          }
                         }
                     }
 
-                    Spacer()
+                    Spacer(minLength: 0)
                 }
+                .padding(.horizontal)
+
                 .padding(.horizontal)
                 .onAppear {
                     if !hasLoaded && !postcode.isEmpty {
