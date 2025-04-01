@@ -29,6 +29,12 @@ struct Restaurant: Decodable, Identifiable {
         let city: String
         let firstLine: String
         let postalCode: String
+        let location: Location?
+
+        struct Location: Decodable{
+            let coordinates: [Double]
+
+        }
     }
 
     struct Cuisine: Decodable {

@@ -36,19 +36,23 @@ struct RestaurantCardView: View {
                     .font(.subheadline)
                     .foregroundColor(.gray)
                     .lineLimit(1)
-            }
-            Spacer()
+          }
+          Spacer()
 
-            if let rating = restaurant.rating?.starRating {
-                HStack(spacing: 4) {
-                    Image(systemName: "star.fill")
-                        .foregroundColor(.orange)
-                        .font(.caption)
-                    Text(String(format: "%.1f", rating))
-                        .font(.caption)
-                        .foregroundColor(.orange)
-                }
-            }
+          if let rating = restaurant.rating?.starRating {
+              HStack(spacing: 4) {
+                Image(systemName: "star.fill")
+                    .foregroundColor(.orange)
+                    .font(.caption)
+                Text(String(format: "%.1f", rating))
+                    .font(.caption)
+                    .foregroundColor(.orange)
+              }
+          }
+          
+
+
+
         }
         Spacer()
 

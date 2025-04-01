@@ -81,6 +81,12 @@ struct RestaurantView: View {
                                 .foregroundColor(.black)
                         }
                     }
+                    if let location = restaurant.address?.location, location.coordinates.count == 2 {
+                        let coords = location.coordinates
+                        RestaurantMapView(latitude: coords[1], longitude: coords[0], name: restaurant.name)
+                            .padding(.top, 12)
+                    }
+
                 }
                 .padding()
                 .frame(maxWidth: .infinity)

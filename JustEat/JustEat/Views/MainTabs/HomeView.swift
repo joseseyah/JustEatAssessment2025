@@ -96,7 +96,6 @@ struct HomeView: View {
 
                     Spacer(minLength: 0)
                 }
-                .padding(.horizontal)
 
                 .padding(.horizontal)
                 .onAppear {
