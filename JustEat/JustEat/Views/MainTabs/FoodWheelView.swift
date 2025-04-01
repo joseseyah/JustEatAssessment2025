@@ -20,14 +20,13 @@ struct FoodSlotMachineView: View {
 
     var body: some View {
         ZStack {
-            RadialGradient(
+            LinearGradient(
                 gradient: Gradient(colors: [
-                    Color(red: 1.0, green: 0.75, blue: 0.3),
-                    Color(red: 1.0, green: 0.45, blue: 0.0)
+                    Color(red: 1.0, green: 0.6, blue: 0.2),
+                    Color(red: 1.0, green: 0.4, blue: 0.0)
                 ]),
-                center: .center,
-                startRadius: 100,
-                endRadius: 500
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
             )
             .ignoresSafeArea()
 
@@ -37,9 +36,6 @@ struct FoodSlotMachineView: View {
                   .foregroundColor(.white)
                   .padding(.horizontal, 24)
                   .padding(.vertical, 10)
-                  .background(Color.orange.opacity(0.9))
-                  .cornerRadius(20)
-                  .shadow(color: .black.opacity(0.3), radius: 4, x: 2, y: 4)
 
                 ZStack {
                     VStack(spacing: 0) {

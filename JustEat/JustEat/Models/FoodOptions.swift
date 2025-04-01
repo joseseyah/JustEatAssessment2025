@@ -14,7 +14,7 @@ struct FoodOptions {
         "🍔": "Burgers",
         "🍣": "Sushi",
         "🌮": "Mexican",
-        "🍝": "Italien",
+        "🍝": "Italian",
         "🍛": "Indian",
         "🍜": "Chinese",
         "🥙": "Sandwiches"

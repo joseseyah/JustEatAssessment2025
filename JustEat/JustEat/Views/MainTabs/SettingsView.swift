@@ -18,8 +18,8 @@ struct SettingsView: View {
             // Just Eat orange gradient
             LinearGradient(
                 gradient: Gradient(colors: [
-                    Color(red: 1.0, green: 0.7, blue: 0.2),
-                    Color(red: 1.0, green: 0.45, blue: 0.0)
+                    Color(red: 1.0, green: 0.6, blue: 0.2),
+                    Color(red: 1.0, green: 0.4, blue: 0.0)
                 ]),
                 startPoint: .top,
                 endPoint: .bottom
@@ -33,9 +33,6 @@ struct SettingsView: View {
                     .foregroundColor(.white)
                     .padding(.horizontal, 30)
                     .padding(.vertical, 10)
-                    .background(Color.orange.opacity(0.9))
-                    .cornerRadius(20)
-                    .shadow(color: .black.opacity(0.2), radius: 5, x: 0, y: 4)
                     .padding(.top, 30)
 
                 Spacer().frame(height: 20)

@@ -18,11 +18,11 @@ struct HomeView: View {
                 // 🍊 Gradient Background
                 LinearGradient(
                     gradient: Gradient(colors: [
-                        Color(red: 1.0, green: 0.7, blue: 0.2),
-                        Color(red: 1.0, green: 0.45, blue: 0.0)
+                        Color(red: 1.0, green: 0.6, blue: 0.2),
+                        Color(red: 1.0, green: 0.4, blue: 0.0)
                     ]),
-                    startPoint: .top,
-                    endPoint: .bottom
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
                 )
                 .ignoresSafeArea()
 
@@ -33,9 +33,6 @@ struct HomeView: View {
                         .foregroundColor(.white)
                         .padding(.horizontal, 30)
                         .padding(.vertical, 10)
-                        .background(Color.orange.opacity(0.9))
-                        .cornerRadius(20)
-                        .shadow(color: .black.opacity(0.2), radius: 5, x: 0, y: 4)
                         .padding(.top, 20)
 
                     Spacer(minLength: 10)
@@ -54,15 +51,18 @@ struct HomeView: View {
                                 .foregroundColor(.white)
                             Spacer()
                         } else {
-                            ScrollView {
-                                LazyVStack(spacing: 16) {
-                                    ForEach(viewModel.restaurants) { restaurant in
-                                        RestaurantCardView(restaurant: restaurant)
-                                            .padding(.horizontal)
-                                    }
-                                }
-                                .padding(.top)
+                          ScrollView {
+                              LazyVStack(spacing: 16) {
+                                  ForEach(viewModel.restaurants) { restaurant in
+                                    NavigationLink(destination: RestaurantView(restaurant: restaurant)) {
+                                          RestaurantCardView(restaurant: restaurant)
+                                              .padding(.horizontal)
+                                      }
+                                      .buttonStyle(PlainButtonStyle()) // removes default link highlight
+                                  }
                             }
+                            .padding(.top)
+                          }
                         }
                     }
 
