@@ -17,6 +17,7 @@ struct Restaurant: Decodable, Identifiable {
     let name: String
     let rating: Rating?
     let cuisines: [Cuisine]?
+    let logoURL: String?
 
     struct Rating: Decodable {
         let starRating: Double?
@@ -32,5 +33,7 @@ struct Restaurant: Decodable, Identifiable {
         case name
         case rating
         case cuisines
+        case logoURL = "logoUrl"
+
     }
 }

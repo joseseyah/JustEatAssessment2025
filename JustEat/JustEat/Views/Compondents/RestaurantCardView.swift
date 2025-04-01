@@ -11,7 +11,21 @@ struct RestaurantCardView: View {
     let restaurant: Restaurant
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
+        HStack{
+          if let logoURL = restaurant.logoURL,
+             let url = URL(string: logoURL) {
+              AsyncImage(url: url) { image in
+                  image
+                      .resizable()
+                      .scaledToFit()
+                      .frame(width: 60, height: 60)
+                      .cornerRadius(8)
+              } placeholder: {
+                  ProgressView()
+                      .frame(width: 60, height: 60)
+              }
+          }
+          VStack(alignment: .leading, spacing: 6) {
             Text(restaurant.name)
                 .font(.headline)
                 .fontWeight(.semibold)
@@ -35,6 +49,9 @@ struct RestaurantCardView: View {
                         .foregroundColor(.orange)
                 }
             }
+        }
+        Spacer()
+
         }
         .padding()
         .frame(maxWidth: .infinity, minHeight: 100, maxHeight: 100, alignment: .leading)
