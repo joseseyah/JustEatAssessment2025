@@ -10,7 +10,6 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject private var viewModel = RestaurantViewModel()
-  
     var body: some View {
         TabView {
             HomeView(viewModel: viewModel)
@@ -27,7 +26,8 @@ struct ContentView: View {
                 .tabItem {
                     Label("Settings", systemImage: "gearshape")
                 }
-        }.accentColor(.white)
+        }
+        .tint(.white)
     }
 }
 

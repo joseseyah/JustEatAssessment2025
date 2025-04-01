@@ -11,6 +11,8 @@ struct HomeView: View {
     @AppStorage("userPostcode") private var postcode: String = ""
     @ObservedObject var viewModel: RestaurantViewModel
     @State private var hasLoaded = false
+    @State private var selectedCategory: String? = nil
+
 
     var body: some View {
         NavigationView {
@@ -62,8 +64,11 @@ struct HomeView: View {
                             Spacer(minLength: 10)
                         } else {
                             ScrollView {
-                                FoodCategoryScrollView()
-                                    .padding(.top, 4)
+                                FoodCategoryScrollView(selectedCategory: $selectedCategory) { selectedCuisine in
+                                    viewModel.fetchRestaurants(postcode: postcode, filterByCuisine: selectedCuisine)
+                                }
+
+                                .padding(.top, 4)
 
                                 Text("Popular restaurants near you")
                                     .font(.system(size: 18, weight: .black, design: .rounded))
