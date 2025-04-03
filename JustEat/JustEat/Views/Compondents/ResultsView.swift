@@ -65,8 +65,10 @@ struct ResultsView: View {
             .padding()
             .onAppear{
               if !hasLoaded && !postcode.isEmpty{
-                viewModel.fetchRestaurants(postcode: postcode, filterByCuisine: selectedCategory)
-                hasLoaded = true
+                Task {
+                    await viewModel.fetchRestaurants(postcode: postcode)
+                    hasLoaded = true
+                }
               }
             }
         }

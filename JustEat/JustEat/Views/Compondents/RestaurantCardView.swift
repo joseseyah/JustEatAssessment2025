@@ -30,6 +30,7 @@ struct RestaurantCardView: View {
                 .font(.headline)
                 .fontWeight(.semibold)
                 .lineLimit(1)
+                .foregroundStyle(Color.gray)
 
           if let cuisines = restaurant.cuisines?.first{
                 Text(cuisines.name)

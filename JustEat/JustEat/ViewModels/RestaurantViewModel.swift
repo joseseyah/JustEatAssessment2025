@@ -8,11 +8,13 @@
 
 import Foundation
 
+
+@MainActor
 class RestaurantViewModel: ObservableObject {
     @Published var restaurants: [Restaurant] = []
     @Published var errorMessage: String? = nil
 
-    func fetchRestaurants(postcode: String, filterByCuisine cuisineFilter: String? = nil) {
+    func fetchRestaurants(postcode: String, filterByCuisine cuisineFilter: String? = nil) async {
         let trimmed = postcode.trimmingCharacters(in: .whitespacesAndNewlines)
         guard let url = URL(string: "https://uk.api.just-eat.io/discovery/uk/restaurants/enriched/bypostcode/\(trimmed)") else {
             self.errorMessage = "Something is invalid here"
@@ -22,36 +24,25 @@ class RestaurantViewModel: ObservableObject {
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Accept")
 
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    self.errorMessage = error.localizedDescription
-                    return
+        do {
+            let (data, _) = try await URLSession.shared.data(for: request)
+            let decoded = try JSONDecoder().decode(RestaurantResponse.self, from: data)
+
+            let filteredRestaurants = decoded.restaurants.lazy
+                .filter { $0.isOpenNowForDelivery }
+                .filter {
+                    guard let cuisine = cuisineFilter else { return true }
+                    return $0.cuisines?.first?.name.lowercased() == cuisine.lowercased()
                 }
+                .prefix(10)
 
-                guard let data = data else {
-                    self.errorMessage = "No data"
-                    return
-                }
+            self.restaurants = Array(filteredRestaurants)
 
-                do {
-                    let decoded = try JSONDecoder().decode(RestaurantResponse.self, from: data)
-                    var filteredRestaurants = decoded.restaurants
+            
+            self.restaurants = Array(filteredRestaurants.prefix(10))
 
-                    if let cuisine = cuisineFilter {
-                        filteredRestaurants = filteredRestaurants.filter { restaurant in
-                            restaurant.cuisines?.first?.name.lowercased() == cuisine.lowercased()
-                        }
-                    }
-
-
-
-                    self.restaurants = Array(filteredRestaurants.prefix(10))
-
-                } catch {
-                    self.errorMessage = "Failed to decode response: \(error.localizedDescription)"
-                }
-            }
-        }.resume()
+        } catch {
+            self.errorMessage = "Failed to decode response: \(error.localizedDescription)"
+        }
     }
 }

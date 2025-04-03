@@ -65,7 +65,9 @@ struct HomeView: View {
                         } else {
                             ScrollView {
                                 FoodCategoryScrollView(selectedCategory: $selectedCategory) { selectedCuisine in
-                                    viewModel.fetchRestaurants(postcode: postcode, filterByCuisine: selectedCuisine)
+                                    Task {
+                                        await viewModel.fetchRestaurants(postcode: postcode, filterByCuisine: selectedCuisine)
+                                    }
                                 }
 
                                 .padding(.top, 4)
@@ -100,15 +102,17 @@ struct HomeView: View {
                 .padding(.horizontal)
                 .onAppear {
                     if !hasLoaded && !postcode.isEmpty {
-                        viewModel.fetchRestaurants(postcode: postcode)
-                        hasLoaded = true
+                        Task {
+                            await viewModel.fetchRestaurants(postcode: postcode)
+                            hasLoaded = true
+                        }
                     }
                 }
             }
-            .navigationBarHidden(true)
+            .toolbar(.hidden, for: .navigationBar)
         }
-        .onChange(of: postcode) { newValue in
-            viewModel.fetchRestaurants(postcode: newValue)
+        .task(id: postcode) {
+            await viewModel.fetchRestaurants(postcode: postcode)
         }
     }
 }

@@ -70,7 +70,9 @@ struct SettingsView: View {
                     Button(action: {
                         if !tempPostcode.trimmingCharacters(in: .whitespaces).isEmpty {
                             userPostcode = tempPostcode
-                            viewModel.fetchRestaurants(postcode: tempPostcode)
+                            Task {
+                                await viewModel.fetchRestaurants(postcode: tempPostcode)
+                            }
                             tempPostcode = ""
                             withAnimation { showingSaved = true }
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
