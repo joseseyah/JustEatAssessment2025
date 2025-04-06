@@ -21,8 +21,14 @@ struct RestaurantMapView: View {
             span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
         )
 
-        Map(coordinateRegion: .constant(region), annotationItems: [MapPin(coordinate: coordinate, name: name)]) { pin in
-            MapMarker(coordinate: pin.coordinate, tint: .red)
+        let pin = MapPin(coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), name: name)
+
+//        Map(coordinateRegion: .constant(region), annotationItems: [MapPin(coordinate: coordinate, name: name)]) { pin in
+//            MapMarker(coordinate: pin.coordinate, tint: .red)
+//        }
+        Map(initialPosition: .region(region)) {
+            Marker(pin.name, coordinate: pin.coordinate)
+                .tint(.red)
         }
         .frame(height: 200)
         .cornerRadius(12)
