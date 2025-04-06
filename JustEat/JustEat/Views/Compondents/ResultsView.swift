@@ -66,7 +66,7 @@ struct ResultsView: View {
             .onAppear{
               if !hasLoaded && !postcode.isEmpty{
                 Task {
-                    await viewModel.fetchRestaurants(postcode: postcode)
+                  await viewModel.fetchRestaurants(postcode: postcode, filterByCuisine: selectedCategory)
                     hasLoaded = true
                 }
               }
