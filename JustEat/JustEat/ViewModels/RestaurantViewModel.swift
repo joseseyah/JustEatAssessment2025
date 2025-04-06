@@ -7,6 +7,7 @@
 
 
 import Foundation
+import CoreLocation
 
 
 @MainActor
@@ -44,5 +45,22 @@ class RestaurantViewModel: ObservableObject {
         } catch {
             self.errorMessage = "Failed to decode response: \(error.localizedDescription)"
         }
+    }
+
+    func validatePostcode(_ postcode: String, completion: @escaping (Bool) -> Void){
+        let geocoder = CLGeocoder()
+        geocoder.geocodeAddressString(postcode){ placemarks, error in
+          // some errors produced and postcode is treated as invalid
+          if let _ = error {
+              completion(false)
+          }
+          // postcode has got placemarks
+          else if let placemarks = placemarks, !placemarks.isEmpty {
+              completion(true)
+          }
+          else {
+              completion(false)
+        }
+      }
     }
 }

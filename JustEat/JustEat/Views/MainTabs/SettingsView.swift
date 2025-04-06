@@ -14,6 +14,9 @@ struct SettingsView: View {
     @State private var showingSaved = false
     var viewModel: RestaurantViewModel
 
+    @State private var showInvalidPostcodeAlert = false
+
+
     var body: some View {
         ZStack {
             // Just Eat orange gradient
@@ -69,15 +72,24 @@ struct SettingsView: View {
                     // Light orange button
                     Button(action: {
                         if !tempPostcode.trimmingCharacters(in: .whitespaces).isEmpty {
-                            userPostcode = tempPostcode
-                            Task {
-                                await viewModel.fetchRestaurants(postcode: tempPostcode)
+                          viewModel.validatePostcode(tempPostcode){ isValid in
+                            if isValid{
+                              userPostcode = tempPostcode
+                              Task {
+                                  await viewModel.fetchRestaurants(postcode: tempPostcode)
+                              }
+                              tempPostcode = ""
+                              withAnimation { showingSaved = true }
+                              DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                  withAnimation { showingSaved = false }
+                              }
                             }
-                            tempPostcode = ""
-                            withAnimation { showingSaved = true }
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                withAnimation { showingSaved = false }
+                            else{
+                              showInvalidPostcodeAlert = true
                             }
+
+                          }
+
                         }
                     }) {
                         HStack {
@@ -88,9 +100,16 @@ struct SettingsView: View {
                         .foregroundColor(.white)
                         .padding()
                         .frame(maxWidth: .infinity)
-                        .background(Color(red: 1.0, green: 0.6, blue: 0.2)) // lighter orange
+                        .background(Color(red: 1.0, green: 0.6, blue: 0.2))
                         .cornerRadius(12)
                         .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
+                    }
+                    .alert(isPresented: $showInvalidPostcodeAlert) {
+                        Alert(
+                            title: Text("Invalid Postcode"),
+                            message: Text("Please enter a valid UK postcode."),
+                            dismissButton: .default(Text("Re-enter postcode"))
+                        )
                     }
 
                     if showingSaved {
