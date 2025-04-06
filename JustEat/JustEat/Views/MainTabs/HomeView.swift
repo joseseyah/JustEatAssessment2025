@@ -72,7 +72,7 @@ struct HomeView: View {
 
                                 .padding(.top, 4)
 
-                                Text("Popular restaurants near you")
+                                Text(selectedCategory.map { "\($0.capitalized) restaurants near you" } ?? "Popular restaurants near you")
                                     .font(.system(size: 18, weight: .black, design: .rounded))
                                     .foregroundColor(.orange)
                                     .padding(.horizontal, 16)
