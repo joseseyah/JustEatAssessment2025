@@ -51,15 +51,18 @@ struct RestaurantView: View {
 
                 // White info card
                 VStack(alignment: .leading, spacing: 16) {
-                    if let cuisine = restaurant.cuisines?.first {
-                        HStack {
-                            Text("Cuisine:")
+                    if let cuisines = restaurant.cuisines, !cuisines.isEmpty {
+                        HStack(alignment: .top) {
+                            Text("Cuisines:")
                                 .foregroundColor(.gray)
                             Spacer()
-                            Text(cuisine.name)
+                            Text(cuisines.map { $0.name }.joined(separator: ", "))
                                 .foregroundColor(.black)
+                                .multilineTextAlignment(.trailing)
                         }
                     }
+
+
 
                     if let rating = restaurant.rating?.starRating {
                         HStack {
