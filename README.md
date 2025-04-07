@@ -2,6 +2,8 @@
 
 This is my solution for the Early Careers Mobile Engineering Program iOS Coding Assignment. The app fetches and displays restaurant data based on a UK postcode using the Just Eat API. All code written was made using Swift.
 
+I called the application JustPick because the main feature in the application is the Random cuisine machine. This feature are for those people (like myself) who somethings struggles deciding what meal to have when ordering online. This feature allows them to spin the machine to see what cuisine they want then they can proceed to pick a local restaurant near them.
+
 ## Images from simulator
 
 
